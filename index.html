@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Vignesh!</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  color: #2D2D2D;
+  background: linear-gradient(135deg, #FFD700, #FF6B6B);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 80px 20px 60px;
+  position: relative;
+}
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #C2185B;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 12px;
+}
+.hero .subtitle {
+  font-size: 1.4rem;
+  color: #2D2D2D;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+/* ===== CONFETTI ===== */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  opacity: 0;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0% { opacity: 1; transform: translateY(0) translateX(0) rotate(0deg); }
+  100% { opacity: 0; transform: translateY(105vh) translateX(var(--drift)) rotate(var(--rot)); }
+}
+
+/* ===== SECTIONS ===== */
+section {
+  padding: 60px 0;
+}
+section h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #C2185B;
+  margin-bottom: 30px;
+}
+
+/* ===== CAKE ===== */
+.cake-section { text-align: center; }
+.cake-wrapper {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  padding-top: 50px;
+}
+.cake-message {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) scale(0.5);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #C2185B;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  pointer-events: none;
+}
+.cake-message.visible {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+.cake {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Cake tiers */
+.tier {
+  border-radius: 10px 10px 12px 12px;
+  position: relative;
+}
+.tier-top {
+  width: 100px;
+  height: 40px;
+  background: linear-gradient(180deg, #F48FB1, #E91E63);
+  border-radius: 8px 8px 10px 10px;
+}
+.tier-mid {
+  width: 150px;
+  height: 45px;
+  background: linear-gradient(180deg, #CE93D8, #9C27B0);
+  border-radius: 6px 6px 10px 10px;
+  margin-top: -2px;
+}
+.tier-bot {
+  width: 200px;
+  height: 50px;
+  background: linear-gradient(180deg, #FFF176, #FBC02D);
+  border-radius: 6px 6px 14px 14px;
+  margin-top: -2px;
+}
+
+/* Frosting drips */
+.tier::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 10%;
+  width: 80%;
+  height: 10px;
+  border-radius: 0 0 50% 50%;
+}
+.tier-top::after { background: rgba(233,30,99,0.4); }
+.tier-mid::after { background: rgba(156,39,176,0.3); }
+.tier-bot::after { background: rgba(251,192,45,0.3); }
+
+/* Plate */
+.plate {
+  width: 230px;
+  height: 16px;
+  background: linear-gradient(180deg, #e0e0e0, #bdbdbd);
+  border-radius: 0 0 50% 50%;
+  margin-top: 2px;
+}
+
+/* Candles */
+.candles {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: -4px;
+  position: relative;
+  z-index: 2;
+}
+.candle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.candle-stick {
+  width: 8px;
+  height: 30px;
+  border-radius: 3px 3px 0 0;
+}
+.candle:nth-child(1) .candle-stick { background: linear-gradient(180deg, #64B5F6, #2196F3); }
+.candle:nth-child(2) .candle-stick { background: linear-gradient(180deg, #81C784, #4CAF50); }
+.candle:nth-child(3) .candle-stick { background: linear-gradient(180deg, #FFB74D, #FF9800); }
+.candle:nth-child(4) .candle-stick { background: linear-gradient(180deg, #F48FB1, #E91E63); }
+.candle:nth-child(5) .candle-stick { background: linear-gradient(180deg, #CE93D8, #9C27B0); }
+
+/* Flames */
+.flame {
+  width: 10px;
+  height: 16px;
+  background: radial-gradient(ellipse at center bottom, #FFF176 0%, #FFEE58 30%, #FFB300 60%, #FF6F00 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  box-shadow: 0 0 8px 3px rgba(255,183,0,0.5), 0 0 16px 6px rgba(255,111,0,0.2);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.flame.out {
+  opacity: 0;
+  transform: scale(0);
+}
+.candle:nth-child(1) .flame { animation: flicker 0.3s ease-in-out infinite alternate; animation-delay: 0s; }
+.candle:nth-child(2) .flame { animation: flicker 0.3s ease-in-out infinite alternate; animation-delay: 0.1s; }
+.candle:nth-child(3) .flame { animation: flicker 0.3s ease-in-out infinite alternate; animation-delay: 0.05s; }
+.candle:nth-child(4) .flame { animation: flicker 0.3s ease-in-out infinite alternate; animation-delay: 0.15s; }
+.candle:nth-child(5) .flame { animation: flicker 0.3s ease-in-out infinite alternate; animation-delay: 0.08s; }
+
+@keyframes flicker {
+  0% { transform: scale(1) rotate(-2deg); opacity: 1; }
+  50% { transform: scale(1.05, 0.95) rotate(1deg); opacity: 0.9; }
+  100% { transform: scale(0.95, 1.05) rotate(2deg); opacity: 1; }
+}
+.flame.out { animation: none; }
+
+.cake-hint {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: #2D2D2D;
+  opacity: 0.6;
+}
+
+/* ===== COUNTDOWN ===== */
+.countdown-cards {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.countdown-card {
+  background: rgba(255,255,255,0.9);
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 20px 24px;
+  text-align: center;
+  min-width: 90px;
+}
+.countdown-card .number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.countdown-card:nth-child(1) .number { color: #C2185B; }
+.countdown-card:nth-child(2) .number { color: #2196F3; }
+.countdown-card:nth-child(3) .number { color: #4CAF50; }
+.countdown-card:nth-child(4) .number { color: #FF9800; }
+.countdown-card .label {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.countdown-done {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #C2185B;
+  display: none;
+}
+
+/* ===== PARTY DETAILS ===== */
+.details-card {
+  background: rgba(255,255,255,0.9);
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 36px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.detail-row {
+  display: flex;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.detail-row:last-child { border-bottom: none; }
+.detail-icon {
+  font-size: 1.3rem;
+  width: 36px;
+  flex-shrink: 0;
+}
+.detail-label {
+  font-weight: 600;
+  color: #2D2D2D;
+  width: 120px;
+  flex-shrink: 0;
+}
+.detail-value {
+  color: #555;
+  flex: 1;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 0.9rem;
+  color: rgba(45,45,45,0.5);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .hero { padding: 60px 20px 40px; }
+  .hero h1 { font-size: 2rem; }
+  .hero .subtitle { font-size: 1.1rem; }
+  section { padding: 40px 0; }
+  section h2 { font-size: 1.5rem; }
+  .countdown-card { min-width: 70px; padding: 14px 16px; }
+  .countdown-card .number { font-size: 2rem; }
+  .details-card { padding: 24px; }
+  .detail-label { width: 100px; font-size: 0.9rem; }
+  .detail-value { font-size: 0.9rem; }
+  .cake-message { font-size: 1.3rem; }
+  .tier-top { width: 80px; height: 32px; }
+  .tier-mid { width: 120px; height: 36px; }
+  .tier-bot { width: 160px; height: 40px; }
+  .plate { width: 184px; }
+  .candles { gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Confetti Container -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<!-- Hero Section -->
+<section class="hero">
+  <h1>Happy Birthday, Vignesh!</h1>
+  <p class="subtitle">September 7</p>
+</section>
+
+<!-- Cake Section -->
+<section class="cake-section">
+  <div class="container">
+    <h2>Make a Wish!</h2>
+    <div class="cake-wrapper" id="cakeWrapper" role="button" tabindex="0" aria-label="Click to blow out the candles">
+      <div class="cake-message" id="cakeMessage">Happy Birthday!</div>
+      <div class="cake">
+        <div class="candles">
+          <div class="candle"><div class="flame" id="flame0"></div><div class="candle-stick"></div></div>
+          <div class="candle"><div class="flame" id="flame1"></div><div class="candle-stick"></div></div>
+          <div class="candle"><div class="flame" id="flame2"></div><div class="candle-stick"></div></div>
+          <div class="candle"><div class="flame" id="flame3"></div><div class="candle-stick"></div></div>
+          <div class="candle"><div class="flame" id="flame4"></div><div class="candle-stick"></div></div>
+        </div>
+        <div class="tier tier-top"></div>
+        <div class="tier tier-mid"></div>
+        <div class="tier tier-bot"></div>
+        <div class="plate"></div>
+      </div>
+      <p class="cake-hint">Tap the cake to blow out the candles!</p>
+    </div>
+  </div>
+</section>
+
+<!-- Countdown Section -->
+<section class="countdown-section">
+  <div class="container">
+    <h2>Countdown to the Party</h2>
+    <div class="countdown-cards" id="countdownCards">
+      <div class="countdown-card"><div class="number" id="cdDays">--</div><div class="label">Days</div></div>
+      <div class="countdown-card"><div class="number" id="cdHours">--</div><div class="label">Hours</div></div>
+      <div class="countdown-card"><div class="number" id="cdMins">--</div><div class="label">Minutes</div></div>
+      <div class="countdown-card"><div class="number" id="cdSecs">--</div><div class="label">Seconds</div></div>
+    </div>
+    <div class="countdown-done" id="countdownDone">The party is ON! Let's go!</div>
+  </div>
+</section>
+
+<!-- Party Details Section -->
+<section class="details-section">
+  <div class="container">
+    <h2>Party Details</h2>
+    <div class="details-card">
+      <div class="detail-row">
+        <span class="detail-icon">&#x1F4C5;</span>
+        <span class="detail-label">Date</span>
+        <span class="detail-value">[Saturday, September 7, 2026]</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-icon">&#x1F552;</span>
+        <span class="detail-label">Time</span>
+        <span class="detail-value">[6:00 PM onwards]</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-icon">&#x1F4CD;</span>
+        <span class="detail-label">Venue</span>
+        <span class="detail-value">[Venue Name, Full Address]</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-icon">&#x1F454;</span>
+        <span class="detail-label">Dress Code</span>
+        <span class="detail-value">[Casual / Festive Attire]</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-icon">&#x1F37B;</span>
+        <span class="detail-label">BYOB</span>
+        <span class="detail-value">[Yes / No]</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-icon">&#x2728;</span>
+        <span class="detail-label">Notes</span>
+        <span class="detail-value">[Any additional info for guests]</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>Made with love for Vignesh's birthday</footer>
+
+<script>
+/* ===== CONFETTI ===== */
+(function() {
+  var container = document.getElementById('confettiContainer');
+  var colors = ['#FF6B6B', '#FFD700', '#2196F3', '#4CAF50', '#E91E63', '#FF9800', '#9C27B0'];
+  var count = 80 + Math.floor(Math.random() * 41); // 80-120
+
+  for (var i = 0; i < count; i++) {
+    var piece = document.createElement('div');
+    piece.classList.add('confetti-piece');
+    var size = 8 + Math.random() * 4;
+    var isRect = Math.random() > 0.5;
+    piece.style.width = size + 'px';
+    piece.style.height = (isRect ? size * (1.5 + Math.random()) : size) + 'px';
+    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.borderRadius = Math.random() > 0.5 ? '2px' : '50%';
+
+    var duration = 3 + Math.random() * 3; // 3-6s
+    var delay = Math.random() * 2; // stagger over 2s
+    var drift = (Math.random() - 0.5) * 150; // -75 to 75px
+    var rotation = (Math.random() - 0.5) * 720; // -360 to 360deg
+
+    piece.style.setProperty('--drift', drift + 'px');
+    piece.style.setProperty('--rot', rotation + 'deg');
+    piece.style.animationDuration = duration + 's';
+    piece.style.animationDelay = delay + 's';
+
+    container.appendChild(piece);
+
+    // Cleanup after animation
+    (function(el, d, dl) {
+      setTimeout(function() { el.remove(); }, (d + dl) * 1000 + 200);
+    })(piece, duration, delay);
+  }
+})();
+
+/* ===== CAKE INTERACTION ===== */
+(function() {
+  var wrapper = document.getElementById('cakeWrapper');
+  var message = document.getElementById('cakeMessage');
+  var flames = document.querySelectorAll('.flame');
+  var lit = true;
+
+  wrapper.addEventListener('click', function() {
+    lit = !lit;
+    flames.forEach(function(f) {
+      if (lit) {
+        f.classList.remove('out');
+      } else {
+        f.classList.add('out');
+      }
+    });
+    if (!lit) {
+      setTimeout(function() { message.classList.add('visible'); }, 500);
+    } else {
+      message.classList.remove('visible');
+    }
+  });
+
+  wrapper.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      wrapper.click();
+    }
+  });
+})();
+
+/* ===== COUNTDOWN ===== */
+(function() {
+  /* ---- PLACEHOLDER: Change this date to your actual party date/time ---- */
+  var PARTY_DATE = new Date('2026-09-07T18:00:00');
+  /* --------------------------------------------------------------------- */
+
+  var elDays = document.getElementById('cdDays');
+  var elHours = document.getElementById('cdHours');
+  var elMins = document.getElementById('cdMins');
+  var elSecs = document.getElementById('cdSecs');
+  var elCards = document.getElementById('countdownCards');
+  var elDone = document.getElementById('countdownDone');
+
+  function pad(n) { return n < 10 ? '0' + n : n; }
+
+  function update() {
+    var now = new Date();
+    var diff = PARTY_DATE - now;
+
+    if (diff <= 0) {
+      elCards.style.display = 'none';
+      elDone.style.display = 'block';
+      return;
+    }
+
+    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    var mins = Math.floor((diff / (1000 * 60)) % 60);
+    var secs = Math.floor((diff / 1000) % 60);
+
+    elDays.textContent = days;
+    elHours.textContent = pad(hours);
+    elMins.textContent = pad(mins);
+    elSecs.textContent = pad(secs);
+  }
+
+  update();
+  setInterval(update, 1000);
+})();
+</script>
+</body>
+</html>
